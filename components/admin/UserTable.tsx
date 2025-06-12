@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface User {
   id: string;
@@ -27,7 +27,7 @@ export default function UserTable({ users, onUserStatusChange }: UserTableProps)
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   // Filter and sort users
-  useState(() => {
+  useEffect(() => {
     let filtered = users;
 
     // Apply status filter

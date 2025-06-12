@@ -5,6 +5,50 @@ import UserTable from '@/components/admin/UserTable';
 import OrdersList from '@/components/admin/OrdersList';
 import SubscriptionsSummary from '@/components/admin/SubscriptionsSummary';
 
+// Import interfaces for proper typing
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  status: 'active' | 'inactive';
+  joinDate: string;
+  lastLogin: string;
+  orderCount: number;
+  totalSpent: number;
+  subscription: string | null;
+}
+
+interface Order {
+  id: string;
+  customerName: string;
+  customerEmail: string;
+  total: number;
+  status: 'pending' | 'processing' | 'completed' | 'cancelled';
+  date: string;
+  items: string[];
+  paymentMethod: string;
+  deliveryAddress: string;
+}
+
+interface Subscription {
+  id: string;
+  planName: string;
+  customerName: string;
+  customerEmail: string;
+  status: 'active' | 'paused' | 'cancelled';
+  startDate: string;
+  nextBilling: string | null;
+  price: number;
+  mealsPerWeek: number;
+}
+
+interface RecentActivity {
+  id: string;
+  type: string;
+  message: string;
+  timestamp: string;
+}
+
 interface DashboardData {
   currentAdmin: {
     id: string;
@@ -28,10 +72,10 @@ interface DashboardData {
     monthlyRevenue: number;
     averageOrderValue: number;
   };
-  users: Array<Record<string, unknown>>;
-  orders: Array<Record<string, unknown>>;
-  subscriptions: Array<Record<string, unknown>>;
-  recentActivity: Array<Record<string, unknown>>;
+  users: User[];
+  orders: Order[];
+  subscriptions: Subscription[];
+  recentActivity: RecentActivity[];
 }
 
 export default function AdminDashboard() {
@@ -71,7 +115,7 @@ export default function AdminDashboard() {
     
     setDashboardData(prev => ({
       ...prev!,
-      users: prev!.users.map(user => 
+      users: prev!.users.map((user: User) => 
         user.id === userId ? { ...user, status: newStatus } : user
       ),
       stats: {
@@ -91,8 +135,8 @@ export default function AdminDashboard() {
     
     setDashboardData(prev => ({
       ...prev!,
-      orders: prev!.orders.map(order => 
-        order.id === orderId ? { ...order, status: newStatus } : order
+      orders: prev!.orders.map((order: Order) => 
+        order.id === orderId ? { ...order, status: newStatus as Order['status'] } : order
       )
     }));
   };
@@ -102,8 +146,8 @@ export default function AdminDashboard() {
     
     setDashboardData(prev => ({
       ...prev!,
-      subscriptions: prev!.subscriptions.map(subscription => 
-        subscription.id === subscriptionId ? { ...subscription, status: newStatus } : subscription
+      subscriptions: prev!.subscriptions.map((subscription: Subscription) => 
+        subscription.id === subscriptionId ? { ...subscription, status: newStatus as Subscription['status'] } : subscription
       )
     }));
   };
@@ -249,7 +293,7 @@ export default function AdminDashboard() {
               </div>
               <div className="p-6">
                 <div className="space-y-4">
-                  {dashboardData.recentActivity.map((activity) => (
+                  {dashboardData.recentActivity.map((activity: RecentActivity) => (
                     <div key={activity.id} className="flex items-start gap-3">
                       <div className={`w-2 h-2 rounded-full mt-2 ${
                         activity.type === 'order' ? 'bg-[#FF7A00]' :
