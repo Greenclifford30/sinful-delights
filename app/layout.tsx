@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Noto_Sans } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
+import { UserProvider } from "@/context/UserContext";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -30,7 +32,11 @@ export default function RootLayout({
         className={`${plusJakartaSans.variable} ${notoSans.variable} antialiased`}
         style={{ fontFamily: 'var(--font-plus-jakarta), var(--font-noto-sans), sans-serif' }}
       >
-        {children}
+        <UserProvider>
+          <CartProvider>
+            {children}
+          </CartProvider>
+        </UserProvider>
       </body>
     </html>
   );

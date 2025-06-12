@@ -1,252 +1,268 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import UserTable from '@/components/admin/UserTable';
+import OrdersList from '@/components/admin/OrdersList';
+import SubscriptionsSummary from '@/components/admin/SubscriptionsSummary';
 
-interface MenuItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  available: boolean;
+interface DashboardData {
+  currentAdmin: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    permissions: string[];
+  };
+  stats: {
+    totalUsers: number;
+    activeUsers: number;
+    inactiveUsers: number;
+    totalOrders: number;
+    pendingOrders: number;
+    completedOrders: number;
+    cancelledOrders: number;
+    totalSubscriptions: number;
+    activeSubscriptions: number;
+    pausedSubscriptions: number;
+    cancelledSubscriptions: number;
+    monthlyRevenue: number;
+    averageOrderValue: number;
+  };
+  users: Array<Record<string, unknown>>;
+  orders: Array<Record<string, unknown>>;
+  subscriptions: Array<Record<string, unknown>>;
+  recentActivity: Array<Record<string, unknown>>;
 }
 
-const initialMenuItems: MenuItem[] = [
-  {
-    id: 1,
-    name: 'Chocolate Lava Cake',
-    description: 'Rich chocolate cake with a molten center',
-    price: 12,
-    available: true,
-  },
-  {
-    id: 2,
-    name: 'Strawberry Cheesecake',
-    description: 'Creamy cheesecake with fresh strawberries',
-    price: 15,
-    available: true,
-  },
-  {
-    id: 3,
-    name: 'Red Velvet Cupcakes',
-    description: 'Moist red velvet cupcakes with cream cheese frosting',
-    price: 10,
-    available: true,
-  },
-  {
-    id: 4,
-    name: 'Lemon Tart',
-    description: 'Tangy lemon tart with a buttery crust',
-    price: 14,
-    available: false,
-  },
-  {
-    id: 5,
-    name: 'Carrot Cake',
-    description: 'Classic carrot cake with cream cheese frosting',
-    price: 13,
-    available: true,
-  },
-];
+export default function AdminDashboard() {
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default function AdminPage() {
-  const [menuItems, setMenuItems] = useState(initialMenuItems);
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      try {
+        // TODO: Replace with actual API call to /api/admin/dashboard
+        // const response = await fetch('/api/admin/dashboard', {
+        //   headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        //   }
+        // });
+        
+        const response = await fetch('/mock/admin-dashboard.json');
+        if (!response.ok) {
+          throw new Error('Failed to load dashboard data');
+        }
+        const data = await response.json();
+        setDashboardData(data);
+      } catch (err) {
+        console.error('Error loading dashboard data:', err);
+        setError('Failed to load dashboard data. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const toggleAvailability = (id: number) => {
-    setMenuItems(prev => 
-      prev.map(item => 
-        item.id === id ? { ...item, available: !item.available } : item
-      )
-    );
+    loadDashboardData();
+  }, []);
+
+  const handleUserStatusChange = (userId: string, newStatus: 'active' | 'inactive') => {
+    if (!dashboardData) return;
+    
+    setDashboardData(prev => ({
+      ...prev!,
+      users: prev!.users.map(user => 
+        user.id === userId ? { ...user, status: newStatus } : user
+      ),
+      stats: {
+        ...prev!.stats,
+        activeUsers: newStatus === 'active' 
+          ? prev!.stats.activeUsers + 1 
+          : prev!.stats.activeUsers - 1,
+        inactiveUsers: newStatus === 'inactive' 
+          ? prev!.stats.inactiveUsers + 1 
+          : prev!.stats.inactiveUsers - 1
+      }
+    }));
   };
 
+  const handleOrderStatusChange = (orderId: string, newStatus: string) => {
+    if (!dashboardData) return;
+    
+    setDashboardData(prev => ({
+      ...prev!,
+      orders: prev!.orders.map(order => 
+        order.id === orderId ? { ...order, status: newStatus } : order
+      )
+    }));
+  };
+
+  const handleSubscriptionStatusChange = (subscriptionId: string, newStatus: string) => {
+    if (!dashboardData) return;
+    
+    setDashboardData(prev => ({
+      ...prev!,
+      subscriptions: prev!.subscriptions.map(subscription => 
+        subscription.id === subscriptionId ? { ...subscription, status: newStatus } : subscription
+      )
+    }));
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF7A00] mx-auto mb-4"></div>
+          <p className="text-[#c89295]">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !dashboardData) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">{error || 'Failed to load dashboard'}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-[#FF7A00] text-white px-4 py-2 rounded-lg hover:bg-[#E66A00] transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative flex size-full min-h-screen flex-col bg-[#221112]" style={{ fontFamily: '"Plus Jakarta Sans", "Noto Sans", sans-serif' }}>
-      <div className="layout-container flex h-full grow flex-col">
-        <div className="gap-1 px-6 flex flex-1 justify-center py-5">
-          {/* Sidebar */}
-          <div className="layout-content-container flex flex-col w-80">
-            <div className="flex h-full min-h-[700px] flex-col justify-between bg-[#221112] p-4">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 sm:gap-4 text-white">
-                  <Image 
-                    src="/SinfulDelights_StackedLogo-white.png" 
-                    alt="Sinful Delights Logo" 
-                    width={32}
-                    height={32}
-                    className="h-8 w-auto"
-                  />
-                  <h1 className="text-white text-base font-medium leading-normal">Sinful Delights</h1>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-3 px-3 py-2 rounded-full bg-[#472426]">
-                    <div className="text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM152,88V44l44,44Z" />
-                      </svg>
-                    </div>
-                    <p className="text-white text-sm font-medium leading-normal">Menu Manager</p>
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2">
-                    <div className="text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M72,104a8,8,0,0,1,8-8h96a8,8,0,0,1,0,16H80A8,8,0,0,1,72,104Zm8,40h96a8,8,0,0,0,0-16H80a8,8,0,0,0,0,16ZM232,56V208a8,8,0,0,1-11.58,7.15L192,200.94l-28.42,14.21a8,8,0,0,1-7.16,0L128,200.94,99.58,215.15a8,8,0,0,1-7.16,0L64,200.94,35.58,215.15A8,8,0,0,1,24,208V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56Zm-16,0H40V195.06l20.42-10.22a8,8,0,0,1,7.16,0L96,199.06l28.42-14.22a8,8,0,0,1,7.16,0L160,199.06l28.42-14.22a8,8,0,0,1,7.16,0L216,195.06Z" />
-                      </svg>
-                    </div>
-                    <p className="text-white text-sm font-medium leading-normal">Orders</p>
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2">
-                    <div className="text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M104,32H64A16,16,0,0,0,48,48V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,104,32Zm0,176H64V48h40ZM192,32H152a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,192,32Zm0,176H152V48h40Z" />
-                      </svg>
-                    </div>
-                    <p className="text-white text-sm font-medium leading-normal">Catering</p>
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2">
-                    <div className="text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z" />
-                      </svg>
-                    </div>
-                    <p className="text-white text-sm font-medium leading-normal">Subscriptions</p>
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2">
-                    <div className="text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M216,40H136V24a8,8,0,0,0-16,0V40H40A16,16,0,0,0,24,56V176a16,16,0,0,0,16,16H79.36L57.75,219a8,8,0,0,0,12.5,10l29.59-37h56.32l29.59,37a8,8,0,1,0,12.5-10l-21.61-27H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,136H40V56H216V176ZM104,120v24a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Zm32-16v40a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v56a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z" />
-                      </svg>
-                    </div>
-                    <p className="text-white text-sm font-medium leading-normal">Analytics</p>
-                  </div>
-                </div>
+      <div className="space-y-6">
+        {/* Header */}
+        <div>
+          <h1 className="text-white text-3xl font-bold mb-2">
+            Dashboard Overview
+          </h1>
+          <p className="text-[#c89295]">
+            Welcome back, {dashboardData.currentAdmin.name}. Here&apos;s what&apos;s happening with your business today.
+          </p>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-[#1E1E1E] rounded-xl p-6 border border-[#472426]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[#c89295] text-sm">Total Users</p>
+                <p className="text-white text-2xl font-bold">{dashboardData.stats.totalUsers}</p>
+                <p className="text-green-400 text-xs mt-1">
+                  {dashboardData.stats.activeUsers} active
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-[#FF7A00]/20 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-[#FF7A00]" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                </svg>
               </div>
             </div>
           </div>
 
-          {/* Main Content */}
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div className="flex flex-wrap justify-between gap-3 p-4">
-              <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Menu Manager</p>
-            </div>
-
-            {/* Menu Table */}
-            <div className="px-4 py-3">
-              <div className="flex overflow-hidden rounded-xl border border-[#663336] bg-[#221112]">
-                <div className="w-full overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-[#331a1b]">
-                        <th className="px-4 py-3 text-left text-white text-sm font-medium leading-normal min-w-[200px]">Dish</th>
-                        <th className="px-4 py-3 text-left text-white text-sm font-medium leading-normal min-w-[300px]">Description</th>
-                        <th className="px-4 py-3 text-left text-white text-sm font-medium leading-normal min-w-[100px]">Price</th>
-                        <th className="px-4 py-3 text-left text-white text-sm font-medium leading-normal min-w-[120px]">Availability</th>
-                        <th className="px-4 py-3 text-left text-white text-sm font-medium leading-normal min-w-[100px]">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {menuItems.map((item) => (
-                        <tr key={item.id} className="border-t border-t-[#663336]">
-                          <td className="h-[72px] px-4 py-2 text-white text-sm font-normal leading-normal">
-                            {item.name}
-                          </td>
-                          <td className="h-[72px] px-4 py-2 text-[#c89295] text-sm font-normal leading-normal">
-                            {item.description}
-                          </td>
-                          <td className="h-[72px] px-4 py-2 text-[#c89295] text-sm font-normal leading-normal">
-                            ${item.price}
-                          </td>
-                          <td className="h-[72px] px-4 py-2 text-sm font-normal leading-normal">
-                            <button
-                              onClick={() => toggleAvailability(item.id)}
-                              className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#472426] text-white text-sm font-medium leading-normal w-full hover:bg-[#5a2d30] transition-colors"
-                            >
-                              <span className="truncate">{item.available ? 'Available' : 'Unavailable'}</span>
-                            </button>
-                          </td>
-                          <td className="h-[72px] px-4 py-2 text-[#c89295] text-sm font-bold leading-normal tracking-[0.015em]">
-                            <button className="hover:text-white transition-colors">Edit</button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+          <div className="bg-[#1E1E1E] rounded-xl p-6 border border-[#472426]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[#c89295] text-sm">Total Orders</p>
+                <p className="text-white text-2xl font-bold">{dashboardData.stats.totalOrders}</p>
+                <p className="text-yellow-400 text-xs mt-1">
+                  {dashboardData.stats.pendingOrders} pending
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-[#FF7A00]/20 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-[#FF7A00]" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 2L3 7v11a1 1 0 001 1h12a1 1 0 001-1V7l-7-5zM6 9a1 1 0 112 0v6a1 1 0 11-2 0V9zm4 0a1 1 0 112 0v6a1 1 0 11-2 0V9zm4 0a1 1 0 112 0v6a1 1 0 11-2 0V9z" clipRule="evenodd" />
+                </svg>
               </div>
             </div>
+          </div>
 
-            {/* Schedule Section */}
-            <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Schedule</h2>
-            <div className="flex flex-wrap items-center justify-center gap-6 p-4">
-              {/* July Calendar */}
-              <div className="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5">
-                <div className="flex items-center p-1 justify-between">
-                  <button>
-                    <div className="text-white flex size-10 items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z" />
-                      </svg>
-                    </div>
-                  </button>
-                  <p className="text-white text-base font-bold leading-tight flex-1 text-center pr-10">July 2024</p>
-                </div>
-                <div className="grid grid-cols-7">
-                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
-                    <p key={i} className="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">
-                      {day}
-                    </p>
-                  ))}
-                  {/* July calendar days */}
-                  <button className="h-12 w-full text-white col-start-4 text-sm font-medium leading-normal">
-                    <div className="flex size-full items-center justify-center rounded-full">1</div>
-                  </button>
-                  {[2, 3, 4].map(day => (
-                    <button key={day} className="h-12 w-full text-white text-sm font-medium leading-normal">
-                      <div className="flex size-full items-center justify-center rounded-full">{day}</div>
-                    </button>
-                  ))}
-                  <button className="h-12 w-full text-white rounded-l-full bg-[#472426] text-sm font-medium leading-normal">
-                    <div className="flex size-full items-center justify-center rounded-full bg-[#e92932]">5</div>
-                  </button>
-                  {[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30].map(day => (
-                    <button key={day} className="h-12 w-full bg-[#472426] text-white text-sm font-medium leading-normal">
-                      <div className="flex size-full items-center justify-center rounded-full">{day}</div>
-                    </button>
-                  ))}
-                </div>
+          <div className="bg-[#1E1E1E] rounded-xl p-6 border border-[#472426]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[#c89295] text-sm">Subscriptions</p>
+                <p className="text-white text-2xl font-bold">{dashboardData.stats.totalSubscriptions}</p>
+                <p className="text-green-400 text-xs mt-1">
+                  {dashboardData.stats.activeSubscriptions} active
+                </p>
               </div>
+              <div className="w-12 h-12 bg-[#FF7A00]/20 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-[#FF7A00]" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+          </div>
 
-              {/* August Calendar */}
-              <div className="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5">
-                <div className="flex items-center p-1 justify-between">
-                  <p className="text-white text-base font-bold leading-tight flex-1 text-center pl-10">August 2024</p>
-                  <button>
-                    <div className="text-white flex size-10 items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z" />
-                      </svg>
+          <div className="bg-[#1E1E1E] rounded-xl p-6 border border-[#472426]">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[#c89295] text-sm">Monthly Revenue</p>
+                <p className="text-white text-2xl font-bold">${dashboardData.stats.monthlyRevenue.toLocaleString()}</p>
+                <p className="text-[#c89295] text-xs mt-1">
+                  Avg: ${dashboardData.stats.averageOrderValue}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-[#FF7A00]/20 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-[#FF7A00]" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          {/* Left Column - Users and Orders */}
+          <div className="xl:col-span-2 space-y-6">
+            <UserTable 
+              users={dashboardData.users} 
+              onUserStatusChange={handleUserStatusChange}
+            />
+            
+            <OrdersList 
+              orders={dashboardData.orders}
+              onOrderStatusChange={handleOrderStatusChange}
+            />
+          </div>
+
+          {/* Right Column - Subscriptions and Activity */}
+          <div className="space-y-6">
+            <SubscriptionsSummary 
+              subscriptions={dashboardData.subscriptions}
+              stats={dashboardData.stats}
+              onSubscriptionStatusChange={handleSubscriptionStatusChange}
+            />
+
+            {/* Recent Activity */}
+            <div className="bg-[#1E1E1E] rounded-xl border border-[#472426]">
+              <div className="p-6 border-b border-[#472426]">
+                <h3 className="text-white text-lg font-semibold">Recent Activity</h3>
+              </div>
+              <div className="p-6">
+                <div className="space-y-4">
+                  {dashboardData.recentActivity.map((activity) => (
+                    <div key={activity.id} className="flex items-start gap-3">
+                      <div className={`w-2 h-2 rounded-full mt-2 ${
+                        activity.type === 'order' ? 'bg-[#FF7A00]' :
+                        activity.type === 'subscription' ? 'bg-green-400' :
+                        activity.type === 'user' ? 'bg-blue-400' : 'bg-gray-400'
+                      }`} />
+                      <div>
+                        <p className="text-white text-sm">{activity.message}</p>
+                        <p className="text-[#c89295] text-xs">
+                          {new Date(activity.timestamp).toLocaleString()}
+                        </p>
+                      </div>
                     </div>
-                  </button>
-                </div>
-                <div className="grid grid-cols-7">
-                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
-                    <p key={i} className="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">
-                      {day}
-                    </p>
-                  ))}
-                  {/* August calendar days */}
-                  {[1, 2, 3, 4, 5, 6].map(day => (
-                    <button key={day} className={`h-12 w-full bg-[#472426] text-white text-sm font-medium leading-normal ${day === 1 ? 'col-start-4' : ''}`}>
-                      <div className="flex size-full items-center justify-center rounded-full">{day}</div>
-                    </button>
-                  ))}
-                  <button className="h-12 w-full text-white rounded-r-full bg-[#472426] text-sm font-medium leading-normal">
-                    <div className="flex size-full items-center justify-center rounded-full bg-[#e92932]">7</div>
-                  </button>
-                  {[8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30].map(day => (
-                    <button key={day} className="h-12 w-full text-white text-sm font-medium leading-normal">
-                      <div className="flex size-full items-center justify-center rounded-full">{day}</div>
-                    </button>
                   ))}
                 </div>
               </div>
@@ -254,6 +270,5 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

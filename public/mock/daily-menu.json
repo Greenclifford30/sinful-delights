@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Sinful BBQ Ribs",
+    "description": "Slow-cooked fall-off-the-bone ribs glazed with our signature spicy-sweet BBQ sauce, served with crispy fries.",
+    "price": 28.99,
+    "image": "/sinful-bbq-ribs.jpg",
+    "category": "main",
+    "spiceLevel": "medium",
+    "isSpecial": true
+  },
+  {
+    "id": 2,
+    "name": "Truffle Mac & Cheese",
+    "description": "Creamy five-cheese blend with truffle oil, topped with crispy breadcrumbs and fresh herbs.",
+    "price": 22.50,
+    "image": "/truffle-mac-cheese.jpg",
+    "category": "main",
+    "spiceLevel": "none",
+    "isSpecial": false
+  },
+  {
+    "id": 3,
+    "name": "Sinful Chocolate Lava Cake",
+    "description": "Warm dark chocolate cake with a molten center, served with vanilla bean ice cream and fresh berries.",
+    "price": 12.99,
+    "image": "/chocolate-lava-cake.jpg",
+    "category": "dessert",
+    "spiceLevel": "none",
+    "isSpecial": true
+  },
+  {
+    "id": 4,
+    "name": "Garlic Butter Shrimp Scampi",
+    "description": "Jumbo shrimp sautéed in white wine, garlic, and herbs, served over linguine pasta.",
+    "price": 26.75,
+    "image": "/shrimp-scampi.jpg",
+    "category": "main",
+    "spiceLevel": "mild",
+    "isSpecial": false
+  },
+  {
+    "id": 5,
+    "name": "Sinful Loaded Nachos",
+    "description": "House-made tortilla chips loaded with three cheeses, jalapeños, black beans, and topped with our signature sauce.",
+    "price": 18.99,
+    "image": "/loaded-nachos.jpg",
+    "category": "appetizer",
+    "spiceLevel": "hot",
+    "isSpecial": true
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "stepNumber": 1,
+    "title": "Choose Your Plan",
+    "description": "Select from our carefully crafted meal plans designed to satisfy your cravings. From Essential to Gourmet, each plan offers chef-prepared meals delivered fresh to your door.",
+    "imageUrl": "/step-1-choose-plan.jpg",
+    "icon": "clipboard-list"
+  },
+  {
+    "stepNumber": 2,
+    "title": "We Prepare & Cook",
+    "description": "Our expert chefs use premium ingredients to create your sinfully delicious meals. Each dish is prepared with love and attention to detail in our certified kitchen.",
+    "imageUrl": "/step-2-prepare-cook.jpg",
+    "icon": "chef-hat"
+  },
+  {
+    "stepNumber": 3,
+    "title": "Fresh Delivery",
+    "description": "Your meals are packaged in insulated containers and delivered fresh to your doorstep. Track your delivery and enjoy flexible scheduling that fits your lifestyle.",
+    "imageUrl": "/step-3-fresh-delivery.jpg",
+    "icon": "truck"
+  },
+  {
+    "stepNumber": 4,
+    "title": "Heat & Enjoy",
+    "description": "Simply heat your meals following our easy instructions and indulge in restaurant-quality flavors at home. Rate your meals to help us personalize future deliveries.",
+    "imageUrl": "/step-4-heat-enjoy.jpg",
+    "icon": "fire"
+  }
+]

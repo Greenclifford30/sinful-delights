@@ -1,0 +1,114 @@
+[
+  {
+    "id": "plan-starter",
+    "planName": "Starter Plan",
+    "mealsPerWeek": 3,
+    "price": 49.99,
+    "originalPrice": 59.99,
+    "description": "Perfect for trying out our sinful meal prep service with 3 delicious meals per week.",
+    "features": [
+      "3 chef-prepared meals per week",
+      "Flexible delivery schedule",
+      "Skip or pause anytime",
+      "Access to exclusive recipes",
+      "Free shipping"
+    ],
+    "isPopular": false,
+    "discount": "Save $10",
+    "servingSize": "1 person",
+    "category": "starter"
+  },
+  {
+    "id": "plan-essential",
+    "planName": "Essential Plan",
+    "mealsPerWeek": 6,
+    "price": 89.99,
+    "originalPrice": 107.94,
+    "description": "Our most popular plan! Get 6 mouth-watering meals delivered fresh to your door each week.",
+    "features": [
+      "6 chef-prepared meals per week",
+      "Priority customer support",
+      "Flexible delivery schedule",
+      "Skip or pause anytime",
+      "Access to exclusive recipes",
+      "Free shipping",
+      "10% discount on add-ons"
+    ],
+    "isPopular": true,
+    "discount": "Save $18",
+    "servingSize": "1 person",
+    "category": "popular"
+  },
+  {
+    "id": "plan-family",
+    "planName": "Family Plan",
+    "mealsPerWeek": 9,
+    "price": 129.99,
+    "originalPrice": 161.91,
+    "description": "Feed the whole family with 9 hearty, sinful meals that everyone will love every week.",
+    "features": [
+      "9 chef-prepared meals per week",
+      "Family-sized portions (3-4 people)",
+      "Priority customer support",
+      "Flexible delivery schedule",
+      "Skip or pause anytime",
+      "Access to exclusive recipes",
+      "Free shipping",
+      "15% discount on add-ons",
+      "Monthly cooking tips newsletter"
+    ],
+    "isPopular": false,
+    "discount": "Save $32",
+    "servingSize": "3-4 people",
+    "category": "family"
+  },
+  {
+    "id": "plan-gourmet",
+    "planName": "Sinful Gourmet",
+    "mealsPerWeek": 12,
+    "price": 169.99,
+    "originalPrice": 215.88,
+    "description": "Indulge in our premium selection with 12 gourmet meals featuring the finest ingredients.",
+    "features": [
+      "12 premium chef-prepared meals per week",
+      "Gourmet ingredients & exotic spices",
+      "Priority customer support",
+      "Flexible delivery schedule",
+      "Skip or pause anytime",
+      "Access to exclusive recipes",
+      "Free shipping",
+      "20% discount on add-ons",
+      "Monthly cooking tips newsletter",
+      "Chef's special surprise meal",
+      "Wine pairing suggestions"
+    ],
+    "isPopular": false,
+    "discount": "Save $46",
+    "servingSize": "1-2 people",
+    "category": "premium"
+  },
+  {
+    "id": "plan-custom",
+    "planName": "Custom Plan",
+    "mealsPerWeek": "Flexible",
+    "price": "Contact Us",
+    "originalPrice": null,
+    "description": "Need something specific? Work with our chefs to create a custom meal plan tailored to your needs.",
+    "features": [
+      "Fully customizable meal count",
+      "Dietary restriction accommodations",
+      "Allergy-friendly options",
+      "Corporate & bulk ordering",
+      "Dedicated account manager",
+      "Priority customer support",
+      "Flexible delivery schedule",
+      "Access to exclusive recipes",
+      "Custom packaging options",
+      "Volume discounts available"
+    ],
+    "isPopular": false,
+    "discount": null,
+    "servingSize": "Custom",
+    "category": "custom"
+  }
+]

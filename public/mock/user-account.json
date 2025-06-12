@@ -1,0 +1,192 @@
+{
+  "id": "user-12345",
+  "name": "Emily Rodriguez",
+  "email": "emily.rodriguez@email.com",
+  "avatar": "/user-avatar.jpg",
+  "phone": "(555) 123-4567",
+  "address": {
+    "street": "456 Oak Avenue",
+    "city": "Springfield",
+    "state": "CA",
+    "zipCode": "90210",
+    "country": "United States"
+  },
+  "memberSince": "2024-09-22T00:00:00Z",
+  "subscriptionPlan": {
+    "id": "plan-essential",
+    "name": "Essential Plan",
+    "mealsPerWeek": 6,
+    "price": 89.99,
+    "status": "active",
+    "nextBilling": "2024-12-22T00:00:00Z",
+    "startDate": "2024-09-22T00:00:00Z",
+    "features": [
+      "6 chef-prepared meals per week",
+      "Priority customer support",
+      "Flexible delivery schedule",
+      "Skip or pause anytime",
+      "Access to exclusive recipes",
+      "Free shipping",
+      "10% discount on add-ons"
+    ]
+  },
+  "upcomingDeliveries": [
+    {
+      "id": "delivery-001",
+      "date": "2024-12-09T00:00:00Z",
+      "status": "scheduled",
+      "meals": [
+        {
+          "name": "Sinful BBQ Ribs",
+          "description": "Slow-cooked fall-off-the-bone ribs with signature BBQ sauce",
+          "image": "/sinful-bbq-ribs.jpg"
+        },
+        {
+          "name": "Truffle Mac & Cheese",
+          "description": "Creamy five-cheese blend with truffle oil and herbs",
+          "image": "/truffle-mac-cheese.jpg"
+        },
+        {
+          "name": "Garlic Butter Shrimp Scampi",
+          "description": "Jumbo shrimp in white wine garlic sauce over linguine",
+          "image": "/shrimp-scampi.jpg"
+        }
+      ],
+      "deliveryWindow": "12:00 PM - 6:00 PM",
+      "trackingNumber": null
+    },
+    {
+      "id": "delivery-002",
+      "date": "2024-12-16T00:00:00Z",
+      "status": "pending",
+      "meals": [
+        {
+          "name": "Sinful Chocolate Lava Cake",
+          "description": "Warm dark chocolate cake with molten center",
+          "image": "/chocolate-lava-cake.jpg"
+        },
+        {
+          "name": "Sinful Loaded Nachos",
+          "description": "House-made chips with three cheeses and signature sauce",
+          "image": "/loaded-nachos.jpg"
+        }
+      ],
+      "deliveryWindow": "12:00 PM - 6:00 PM",
+      "trackingNumber": null
+    }
+  ],
+  "pastOrders": [
+    {
+      "id": "order-001",
+      "date": "2024-12-02T00:00:00Z",
+      "total": 89.99,
+      "status": "delivered",
+      "items": [
+        "Sinful BBQ Ribs",
+        "Truffle Mac & Cheese",
+        "Garlic Butter Shrimp Scampi",
+        "Sinful Chocolate Lava Cake"
+      ],
+      "rating": 5,
+      "review": "Absolutely amazing! The BBQ ribs were perfectly cooked and the truffle mac was heavenly."
+    },
+    {
+      "id": "order-002",
+      "date": "2024-11-25T00:00:00Z",
+      "total": 89.99,
+      "status": "delivered",
+      "items": [
+        "Sinful Loaded Nachos",
+        "Garlic Butter Shrimp Scampi",
+        "Truffle Mac & Cheese"
+      ],
+      "rating": 4,
+      "review": "Great flavors, delivery was on time. Loved the loaded nachos!"
+    },
+    {
+      "id": "order-003",
+      "date": "2024-11-18T00:00:00Z",
+      "total": 89.99,
+      "status": "delivered",
+      "items": [
+        "Sinful BBQ Ribs",
+        "Sinful Chocolate Lava Cake",
+        "Truffle Mac & Cheese"
+      ],
+      "rating": 5,
+      "review": "Perfect portion sizes and incredible taste. Will definitely order again!"
+    }
+  ],
+  "preferences": {
+    "dietaryRestrictions": [
+      "gluten-free",
+      "dairy-free"
+    ],
+    "allergies": [
+      "shellfish"
+    ],
+    "dislikes": [
+      "mushrooms",
+      "olives"
+    ],
+    "spiceLevel": "medium",
+    "cookingPreference": "medium-rare",
+    "deliveryInstructions": "Leave at front door, ring doorbell",
+    "communicationPreferences": {
+      "email": true,
+      "sms": true,
+      "pushNotifications": false,
+      "marketingEmails": true
+    }
+  },
+  "loyaltyPoints": 2450,
+  "referralCode": "EMILY2024",
+  "paymentMethods": [
+    {
+      "id": "card-001",
+      "type": "credit",
+      "brand": "Visa",
+      "last4": "4242",
+      "expiryMonth": "12",
+      "expiryYear": "2027",
+      "isDefault": true
+    },
+    {
+      "id": "card-002",
+      "type": "credit",
+      "brand": "Mastercard",
+      "last4": "8888",
+      "expiryMonth": "08",
+      "expiryYear": "2026",
+      "isDefault": false
+    }
+  ],
+  "accountSettings": {
+    "notifications": {
+      "orderUpdates": true,
+      "deliveryReminders": true,
+      "promotionalOffers": true,
+      "weeklyMenu": true
+    },
+    "privacy": {
+      "profileVisibility": "private",
+      "shareOrderHistory": false,
+      "allowDataCollection": true
+    },
+    "accessibility": {
+      "fontSize": "medium",
+      "highContrast": false,
+      "screenReader": false
+    }
+  },
+  "statistics": {
+    "totalOrders": 15,
+    "totalSpent": 1347.85,
+    "averageRating": 4.8,
+    "favoriteItems": [
+      "Sinful BBQ Ribs",
+      "Truffle Mac & Cheese",
+      "Sinful Chocolate Lava Cake"
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+[
+  {
+    "id": "CR-2025-001",
+    "date": "2025-01-15",
+    "eventType": "Corporate Event",
+    "guestCount": 50,
+    "menuItems": [
+      "Sinful BBQ Ribs",
+      "Truffle Mac & Cheese",
+      "Garlic Butter Shrimp Scampi"
+    ],
+    "notes": "Please accommodate 3 vegetarian guests. Event starts at 6 PM sharp.",
+    "contactName": "Sarah Johnson",
+    "contactEmail": "sarah.johnson@company.com",
+    "contactPhone": "(555) 123-4567",
+    "venue": "Downtown Conference Center",
+    "status": "pending",
+    "createdAt": "2024-12-20T10:30:00Z"
+  },
+  {
+    "id": "CR-2025-002",
+    "date": "2025-02-08",
+    "eventType": "Wedding Reception",
+    "guestCount": 120,
+    "menuItems": [
+      "Sinful BBQ Ribs",
+      "Sinful Chocolate Lava Cake",
+      "Truffle Mac & Cheese",
+      "Garlic Butter Shrimp Scampi",
+      "Sinful Loaded Nachos"
+    ],
+    "notes": "Outdoor wedding reception. Need setup for buffet-style service. Please include extra napkins and wet wipes.",
+    "contactName": "Michael & Emily Chen",
+    "contactEmail": "wedding.chen@email.com",
+    "contactPhone": "(555) 987-6543",
+    "venue": "Riverside Garden Pavilion",
+    "status": "confirmed",
+    "createdAt": "2024-12-18T14:15:00Z"
+  },
+  {
+    "id": "CR-2025-003",
+    "date": "2025-01-25",
+    "eventType": "Birthday Party",
+    "guestCount": 25,
+    "menuItems": [
+      "Sinful Chocolate Lava Cake",
+      "Sinful Loaded Nachos",
+      "Truffle Mac & Cheese"
+    ],
+    "notes": "Kids birthday party. Please make the chocolate cake extra special with candles. Some adults will be present too.",
+    "contactName": "Lisa Martinez",
+    "contactEmail": "lisa.martinez@gmail.com",
+    "contactPhone": "(555) 456-7890",
+    "venue": "Community Center - Room B",
+    "status": "pending",
+    "createdAt": "2024-12-22T09:45:00Z"
+  },
+  {
+    "id": "CR-2025-004",
+    "date": "2025-03-12",
+    "eventType": "Business Meeting",
+    "guestCount": 15,
+    "menuItems": [
+      "Garlic Butter Shrimp Scampi",
+      "Truffle Mac & Cheese"
+    ],
+    "notes": "Lunch meeting for board members. Need individual portions, not family style. Please include coffee service.",
+    "contactName": "Robert Kim",
+    "contactEmail": "r.kim@techcorp.com",
+    "contactPhone": "(555) 321-0987",
+    "venue": "TechCorp Headquarters - Executive Boardroom",
+    "status": "confirmed",
+    "createdAt": "2024-12-19T16:20:00Z"
+  },
+  {
+    "id": "CR-2025-005",
+    "date": "2025-02-14",
+    "eventType": "Anniversary Celebration",
+    "guestCount": 35,
+    "menuItems": [
+      "Sinful BBQ Ribs",
+      "Sinful Chocolate Lava Cake",
+      "Garlic Butter Shrimp Scampi"
+    ],
+    "notes": "25th wedding anniversary celebration. Looking for romantic presentation. The couple loves spicy food, so extra sauce on the side would be great.",
+    "contactName": "David & Maria Rodriguez",
+    "contactEmail": "rodriguez.family@outlook.com",
+    "contactPhone": "(555) 654-3210",
+    "venue": "Private Residence - Backyard",
+    "status": "pending",
+    "createdAt": "2024-12-21T11:10:00Z"
+  }
+]

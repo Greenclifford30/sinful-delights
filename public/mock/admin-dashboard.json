@@ -1,0 +1,264 @@
+{
+  "currentAdmin": {
+    "id": "admin-001",
+    "name": "Sarah Mitchell",
+    "email": "sarah@sinfuldelights.com",
+    "role": "super_admin",
+    "avatar": "/admin-avatar.jpg",
+    "permissions": ["users", "orders", "subscriptions", "analytics", "settings"]
+  },
+  "stats": {
+    "totalUsers": 1247,
+    "activeUsers": 1089,
+    "inactiveUsers": 158,
+    "totalOrders": 3456,
+    "pendingOrders": 23,
+    "completedOrders": 3398,
+    "cancelledOrders": 35,
+    "totalSubscriptions": 892,
+    "activeSubscriptions": 743,
+    "pausedSubscriptions": 97,
+    "cancelledSubscriptions": 52,
+    "monthlyRevenue": 47892.50,
+    "averageOrderValue": 32.45
+  },
+  "users": [
+    {
+      "id": "user-001",
+      "name": "Michael Johnson",
+      "email": "michael.johnson@email.com",
+      "status": "active",
+      "joinDate": "2024-10-15",
+      "lastLogin": "2024-12-06T14:30:00Z",
+      "orderCount": 12,
+      "totalSpent": 389.88,
+      "subscription": "Essential Plan"
+    },
+    {
+      "id": "user-002",
+      "name": "Emily Rodriguez",
+      "email": "emily.r@gmail.com",
+      "status": "active",
+      "joinDate": "2024-09-22",
+      "lastLogin": "2024-12-05T09:15:00Z",
+      "orderCount": 8,
+      "totalSpent": 256.32,
+      "subscription": "Starter Plan"
+    },
+    {
+      "id": "user-003",
+      "name": "David Chen",
+      "email": "david.chen@company.com",
+      "status": "inactive",
+      "joinDate": "2024-08-10",
+      "lastLogin": "2024-11-20T16:45:00Z",
+      "orderCount": 3,
+      "totalSpent": 97.47,
+      "subscription": null
+    },
+    {
+      "id": "user-004",
+      "name": "Lisa Thompson",
+      "email": "lisa.thompson@outlook.com",
+      "status": "active",
+      "joinDate": "2024-11-01",
+      "lastLogin": "2024-12-06T11:20:00Z",
+      "orderCount": 15,
+      "totalSpent": 487.65,
+      "subscription": "Family Plan"
+    },
+    {
+      "id": "user-005",
+      "name": "James Wilson",
+      "email": "j.wilson@email.com",
+      "status": "active",
+      "joinDate": "2024-07-18",
+      "lastLogin": "2024-12-04T20:10:00Z",
+      "orderCount": 22,
+      "totalSpent": 714.50,
+      "subscription": "Sinful Gourmet"
+    },
+    {
+      "id": "user-006",
+      "name": "Maria Garcia",
+      "email": "maria.garcia@gmail.com",
+      "status": "inactive",
+      "joinDate": "2024-09-05",
+      "lastLogin": "2024-11-15T13:25:00Z",
+      "orderCount": 5,
+      "totalSpent": 162.75,
+      "subscription": null
+    }
+  ],
+  "orders": [
+    {
+      "id": "order-001",
+      "customerName": "Michael Johnson",
+      "customerEmail": "michael.johnson@email.com",
+      "total": 89.99,
+      "status": "completed",
+      "date": "2024-12-05T10:30:00Z",
+      "items": [
+        "Sinful BBQ Ribs",
+        "Truffle Mac & Cheese",
+        "Sinful Chocolate Lava Cake"
+      ],
+      "paymentMethod": "Credit Card",
+      "deliveryAddress": "123 Main St, Anytown, ST 12345"
+    },
+    {
+      "id": "order-002",
+      "customerName": "Emily Rodriguez",
+      "customerEmail": "emily.r@gmail.com",
+      "total": 49.99,
+      "status": "pending",
+      "date": "2024-12-06T08:15:00Z",
+      "items": [
+        "Garlic Butter Shrimp Scampi",
+        "Sinful Loaded Nachos"
+      ],
+      "paymentMethod": "Credit Card",
+      "deliveryAddress": "456 Oak Ave, Springfield, ST 67890"
+    },
+    {
+      "id": "order-003",
+      "customerName": "Lisa Thompson",
+      "customerEmail": "lisa.thompson@outlook.com",
+      "total": 129.99,
+      "status": "processing",
+      "date": "2024-12-06T12:45:00Z",
+      "items": [
+        "Sinful BBQ Ribs",
+        "Truffle Mac & Cheese",
+        "Garlic Butter Shrimp Scampi",
+        "Sinful Chocolate Lava Cake"
+      ],
+      "paymentMethod": "PayPal",
+      "deliveryAddress": "789 Elm St, Downtown, ST 54321"
+    },
+    {
+      "id": "order-004",
+      "customerName": "James Wilson",
+      "customerEmail": "j.wilson@email.com",
+      "total": 169.99,
+      "status": "completed",
+      "date": "2024-12-04T16:20:00Z",
+      "items": [
+        "Sinful BBQ Ribs",
+        "Truffle Mac & Cheese",
+        "Garlic Butter Shrimp Scampi",
+        "Sinful Chocolate Lava Cake",
+        "Sinful Loaded Nachos"
+      ],
+      "paymentMethod": "Credit Card",
+      "deliveryAddress": "321 Pine Rd, Uptown, ST 98765"
+    },
+    {
+      "id": "order-005",
+      "customerName": "David Chen",
+      "customerEmail": "david.chen@company.com",
+      "total": 32.50,
+      "status": "cancelled",
+      "date": "2024-12-03T14:10:00Z",
+      "items": [
+        "Sinful Chocolate Lava Cake"
+      ],
+      "paymentMethod": "Credit Card",
+      "deliveryAddress": "654 Maple Dr, Suburb, ST 13579"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "sub-001",
+      "planName": "Essential Plan",
+      "customerName": "Michael Johnson",
+      "customerEmail": "michael.johnson@email.com",
+      "status": "active",
+      "startDate": "2024-10-15",
+      "nextBilling": "2024-12-15",
+      "price": 89.99,
+      "mealsPerWeek": 6
+    },
+    {
+      "id": "sub-002",
+      "planName": "Starter Plan",
+      "customerName": "Emily Rodriguez",
+      "customerEmail": "emily.r@gmail.com",
+      "status": "active",
+      "startDate": "2024-09-22",
+      "nextBilling": "2024-12-22",
+      "price": 49.99,
+      "mealsPerWeek": 3
+    },
+    {
+      "id": "sub-003",
+      "planName": "Family Plan",
+      "customerName": "Lisa Thompson",
+      "customerEmail": "lisa.thompson@outlook.com",
+      "status": "active",
+      "startDate": "2024-11-01",
+      "nextBilling": "2025-01-01",
+      "price": 129.99,
+      "mealsPerWeek": 9
+    },
+    {
+      "id": "sub-004",
+      "planName": "Sinful Gourmet",
+      "customerName": "James Wilson",
+      "customerEmail": "j.wilson@email.com",
+      "status": "active",
+      "startDate": "2024-07-18",
+      "nextBilling": "2024-12-18",
+      "price": 169.99,
+      "mealsPerWeek": 12
+    },
+    {
+      "id": "sub-005",
+      "planName": "Essential Plan",
+      "customerName": "Sarah Kim",
+      "customerEmail": "sarah.kim@email.com",
+      "status": "paused",
+      "startDate": "2024-08-30",
+      "nextBilling": "2024-12-30",
+      "price": 89.99,
+      "mealsPerWeek": 6
+    },
+    {
+      "id": "sub-006",
+      "planName": "Starter Plan",
+      "customerName": "Alex Morgan",
+      "customerEmail": "alex.morgan@gmail.com",
+      "status": "cancelled",
+      "startDate": "2024-06-12",
+      "nextBilling": null,
+      "price": 49.99,
+      "mealsPerWeek": 3
+    }
+  ],
+  "recentActivity": [
+    {
+      "id": "activity-001",
+      "type": "order",
+      "message": "New order #order-002 placed by Emily Rodriguez",
+      "timestamp": "2024-12-06T08:15:00Z"
+    },
+    {
+      "id": "activity-002",
+      "type": "subscription",
+      "message": "Lisa Thompson upgraded to Family Plan",
+      "timestamp": "2024-12-05T14:30:00Z"
+    },
+    {
+      "id": "activity-003",
+      "type": "user",
+      "message": "New user registration: Alex Thompson",
+      "timestamp": "2024-12-05T11:20:00Z"
+    },
+    {
+      "id": "activity-004",
+      "type": "order",
+      "message": "Order #order-001 completed and delivered",
+      "timestamp": "2024-12-05T10:45:00Z"
+    }
+  ]
+}

@@ -1,86 +1,45 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
-import Navbar from './components/Navbar';
-
-interface MenuItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-}
-
-interface OrderItem extends MenuItem {
-  quantity: number;
-}
-
-const menuItems: MenuItem[] = [
-  {
-    id: 1,
-    name: 'Grilled Salmon with Asparagus',
-    description: 'Freshly grilled salmon with a side of asparagus.',
-    price: 25,
-    image: '/salmon.jpg'
-  },
-  {
-    id: 2,
-    name: 'Chicken Alfredo Pasta',
-    description: 'Creamy Alfredo sauce with grilled chicken and pasta.',
-    price: 20,
-    image: '/chicken-alfredo.jpg'
-  },
-  {
-    id: 3,
-    name: 'Vegetarian Lasagna',
-    description: 'Layers of pasta, vegetables, and cheese.',
-    price: 18,
-    image: '/vegetarian-lasagna.jpg'
-  },
-  {
-    id: 4,
-    name: 'Chocolate Lava Cake',
-    description: 'Warm chocolate cake with a molten center.',
-    price: 12,
-    image: '/chocolate-lava-cake.jpg'
-  }
-];
+import { useCart } from '@/context/CartContext';
+import Navbar from '@/components/Navbar';
+import DailyMenuSection from '@/components/DailyMenuSection';
 
 export default function Home() {
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([
-    { ...menuItems[0], quantity: 1 },
-    { ...menuItems[1], quantity: 1 }
-  ]);
+  const { items: cartItems, total, itemCount, removeItem } = useCart();
 
-  const removeFromOrder = (id: number) => {
-    setOrderItems(prev => prev.filter(item => item.id !== id));
-  };
-
-  const addToOrder = (menuItem: MenuItem) => {
-    setOrderItems(prev => {
-      const existingItem = prev.find(item => item.id === menuItem.id);
-      if (existingItem) {
-        return prev.map(item => 
-          item.id === menuItem.id 
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...menuItem, quantity: 1 }];
-    });
-  };
-
-  const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const deliveryFee = 5;
-  const total = subtotal + deliveryFee;
-  const cartCount = orderItems.reduce((sum, item) => sum + item.quantity, 0);
+  const finalTotal = total + (cartItems.length > 0 ? deliveryFee : 0);
+
+  const handleCheckout = () => {
+    // TODO: Integrate with Stripe for payment processing
+    // const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+    // 
+    // const response = await fetch('/api/create-checkout-session', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     items: cartItems,
+    //     total: finalTotal,
+    //     deliveryFee: deliveryFee
+    //   }),
+    // });
+    // 
+    // const session = await response.json();
+    // const result = await stripe!.redirectToCheckout({
+    //   sessionId: session.id,
+    // });
+    
+    alert(`Checkout functionality coming soon! Total: $${finalTotal.toFixed(2)}`);
+  };
 
   return (
-    <div className="min-h-screen bg-[#221112]">
-      <div className="relative flex size-full min-h-screen flex-col bg-[#221112] font-sans">
+    <div className="min-h-screen bg-[#121212]">
+      <div className="relative flex size-full min-h-screen flex-col bg-[#121212] font-sans">
         <div className="layout-container flex h-full grow flex-col">
-          <Navbar cartCount={cartCount} />
+          <Navbar />
 
           <div className="px-2 sm:px-4 lg:px-8 flex flex-1 justify-center py-5">
             <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-6">
@@ -93,119 +52,114 @@ export default function Home() {
                         backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("/hero-bg.jpg")'
                       }}
                     >
-                      <div className="flex flex-col gap-2 text-left">
-                        <h2 className="text-white text-2xl sm:text-4xl font-black leading-tight tracking-[-0.033em] lg:text-5xl lg:font-black lg:leading-tight lg:tracking-[-0.033em]">
-                          Today&apos;s Specials
-                        </h2>
-                        <p className="text-white text-sm font-normal leading-normal lg:text-base lg:font-normal lg:leading-normal">
-                          Indulge in our chef&apos;s daily creations, featuring fresh, seasonal ingredients and innovative flavors.
-                        </p>
-                      </div>
-                      <button
-                        className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 lg:h-12 lg:px-5 bg-[#e92932] text-white text-sm font-bold leading-normal tracking-[0.015em] lg:text-base lg:font-bold lg:leading-normal lg:tracking-[0.015em] hover:bg-[#d12329] transition-colors"
-                        aria-label="View today's special dishes"
-                      >
-                        <span className="truncate">View Specials</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <section aria-labelledby="menu-heading">
-                  <h2 id="menu-heading" className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Menu</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 p-4">
-                    {menuItems.map((item) => (
-                      <div key={item.id} className="flex flex-col gap-3 pb-3">
-                        <div
-                          className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-gray-600"
-                          role="img"
-                          aria-label={`Photo of ${item.name}`}
-                          style={{ backgroundImage: `url("${item.image}")` }}
-                        />
+                      <div className="flex flex-col gap-4 text-left">
+                        <div className="w-24 xs:w-28 sm:w-32 md:w-36 lg:w-40">
+                          <Image
+                            src="/SinfulDelights_StackedLogo-white.png"
+                            alt="Sinful Delights"
+                            width={160}
+                            height={200}
+                            className="w-full h-auto object-contain"
+                            priority
+                          />
+                        </div>
                         <div>
-                          <h3 className="text-white text-base font-medium leading-normal">{item.name}</h3>
-                          <p className="text-[#c89295] text-sm font-normal leading-normal">{item.description}</p>
-                          <p className="text-white text-sm font-semibold mt-1">${item.price}</p>
+                          <h2 className="text-white text-xl sm:text-2xl font-black leading-tight tracking-[-0.033em] lg:text-3xl lg:font-black lg:leading-tight lg:tracking-[-0.033em] mb-2">
+                            Welcome to Our Kitchen
+                          </h2>
+                          <p className="text-white text-sm font-normal leading-normal lg:text-base lg:font-normal lg:leading-normal">
+                            Indulge in our chef&apos;s daily creations, featuring fresh, seasonal ingredients and innovative flavors that will leave you craving more.
+                          </p>
                         </div>
                       </div>
-                    ))}
-                  </div>
-
-                  <div className="flex justify-stretch">
-                    <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-center sm:justify-between">
                       <button
-                        onClick={() => addToOrder(menuItems[0])}
-                        className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#e92932] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#d12329] transition-colors"
-                        aria-label="Add selected item to order"
+                        className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 lg:h-12 lg:px-5 bg-[#FF7A00] text-white text-sm font-bold leading-normal tracking-[0.015em] lg:text-base lg:font-bold lg:leading-normal lg:tracking-[0.015em] hover:bg-[#E66A00] transition-colors"
+                        onClick={() => document.getElementById('daily-menu-heading')?.scrollIntoView({ behavior: 'smooth' })}
+                        aria-label="View today's special dishes"
                       >
-                        <span className="truncate">Add to Order</span>
-                      </button>
-                      <button
-                        className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#472426] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#5a2d30] transition-colors"
-                        aria-label="View detailed information about selected item"
-                      >
-                        <span className="truncate">View Details</span>
+                        <span className="truncate">View Today&apos;s Menu</span>
                       </button>
                     </div>
                   </div>
-                </section>
+                </div>
+
+                <DailyMenuSection />
               </div>
 
-              <aside className="w-full lg:w-80 lg:min-w-80 bg-[#1a0f10] rounded-lg lg:rounded-none lg:bg-transparent" aria-labelledby="order-summary-heading">
+              <aside className="w-full lg:w-80 lg:min-w-80 bg-[#1E1E1E] rounded-lg lg:rounded-none lg:bg-transparent" aria-labelledby="order-summary-heading">
                 <h3 id="order-summary-heading" className="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Order Summary</h3>
               
-              {orderItems.map((item) => (
-                <div key={item.id} className="flex items-center gap-4 bg-[#221112] px-4 min-h-[72px] py-2 justify-between">
-                  <div className="flex flex-col justify-center">
-                    <p className="text-white text-base font-medium leading-normal line-clamp-1">
-                      {item.quantity} x ${item.price}
-                    </p>
-                    <p className="text-[#c89295] text-sm font-normal leading-normal line-clamp-2">{item.name}</p>
+                {cartItems.length === 0 ? (
+                  <div className="px-4 py-8 text-center">
+                    <p className="text-[#c89295] text-sm">Your cart is empty</p>
+                    <p className="text-[#c89295] text-xs mt-1">Add items from our menu to get started</p>
                   </div>
-                  <button
-                    onClick={() => removeFromOrder(item.id)}
-                    className="shrink-0 text-white hover:text-[#e92932] transition-colors"
-                    aria-label={`Remove ${item.name} from order`}
-                  >
-                    <div className="flex size-7 items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z" />
-                      </svg>
+                ) : (
+                  <>
+                    {cartItems.map((item) => (
+                      <div key={item.id} className="flex items-center gap-4 bg-[#121212] px-4 min-h-[72px] py-2 justify-between">
+                        <div className="flex flex-col justify-center">
+                          <p className="text-white text-base font-medium leading-normal line-clamp-1">
+                            {item.quantity} x ${item.price.toFixed(2)}
+                          </p>
+                          <p className="text-[#c89295] text-sm font-normal leading-normal line-clamp-2">
+                            {item.name.includes('Sinful') ? (
+                              <>
+                                <span className="text-[#8B0000] font-semibold">Sinful</span>
+                                {item.name.replace('Sinful', '')}
+                              </>
+                            ) : (
+                              item.name
+                            )}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => removeItem(item.id)}
+                          className="shrink-0 text-white hover:text-[#FF7A00] transition-colors"
+                          aria-label={`Remove ${item.name} from order`}
+                        >
+                          <div className="flex size-7 items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                              <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z" />
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+                    ))}
+
+                    <div className="flex items-center gap-4 bg-[#121212] px-4 min-h-14 justify-between">
+                      <p className="text-white text-base font-normal leading-normal flex-1 truncate">Subtotal</p>
+                      <div className="shrink-0">
+                        <p className="text-white text-base font-normal leading-normal">${total.toFixed(2)}</p>
+                      </div>
                     </div>
-                  </button>
-                </div>
-              ))}
 
-              <div className="flex items-center gap-4 bg-[#221112] px-4 min-h-14 justify-between">
-                <p className="text-white text-base font-normal leading-normal flex-1 truncate">Subtotal</p>
-                <div className="shrink-0">
-                  <p className="text-white text-base font-normal leading-normal">${subtotal}</p>
-                </div>
-              </div>
+                    <div className="flex items-center gap-4 bg-[#121212] px-4 min-h-14 justify-between">
+                      <p className="text-white text-base font-normal leading-normal flex-1 truncate">Delivery Fee</p>
+                      <div className="shrink-0">
+                        <p className="text-white text-base font-normal leading-normal">${deliveryFee.toFixed(2)}</p>
+                      </div>
+                    </div>
 
-              <div className="flex items-center gap-4 bg-[#221112] px-4 min-h-14 justify-between">
-                <p className="text-white text-base font-normal leading-normal flex-1 truncate">Delivery Fee</p>
-                <div className="shrink-0">
-                  <p className="text-white text-base font-normal leading-normal">${deliveryFee}</p>
-                </div>
-              </div>
+                    <div className="flex items-center gap-4 bg-[#121212] px-4 min-h-14 justify-between border-t border-[#472426]">
+                      <p className="text-white text-base font-semibold leading-normal flex-1 truncate">Total</p>
+                      <div className="shrink-0">
+                        <p className="text-[#FF7A00] text-base font-bold leading-normal">${finalTotal.toFixed(2)}</p>
+                      </div>
+                    </div>
 
-              <div className="flex items-center gap-4 bg-[#221112] px-4 min-h-14 justify-between border-t border-[#472426]">
-                <p className="text-white text-base font-semibold leading-normal flex-1 truncate">Total</p>
-                <div className="shrink-0">
-                  <p className="text-white text-base font-semibold leading-normal">${total}</p>
-                </div>
-              </div>
-
-                <div className="flex px-4 py-3">
-                  <button
-                    className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 flex-1 bg-[#e92932] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#d12329] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={orderItems.length === 0}
-                    aria-label={`Proceed to checkout with ${cartCount} items totaling $${total}`}
-                  >
-                    <span className="truncate">Checkout</span>
-                  </button>
-                </div>
+                    <div className="flex px-4 py-3">
+                      <button
+                        onClick={handleCheckout}
+                        className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 flex-1 bg-[#FF7A00] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#E66A00] transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[#FF7A00] focus:ring-offset-2 focus:ring-offset-[#121212]"
+                        disabled={cartItems.length === 0}
+                        aria-label={`Proceed to checkout with ${itemCount} items totaling $${finalTotal.toFixed(2)}`}
+                      >
+                        <span className="truncate">Checkout</span>
+                      </button>
+                    </div>
+                  </>
+                )}
               </aside>
             </div>
           </div>
